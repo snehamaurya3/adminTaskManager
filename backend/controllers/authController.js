@@ -9,10 +9,20 @@ exports.register = (req, res) => {
 
   db.query(
     "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-    [name, email, hashedPassword, role],
-    (err) => {
-      if (err) return res.status(500).send(err);
-      res.send("User created");
+    [name, email, hashedPassword, role || "user"],
+//     (err) => {
+//       if (err) return res.status(500).send(err);
+//       res.send("User created");
+//     }
+//   );
+// };
+(err, result) => {
+      if (err) {
+        console.error("REGISTER ERROR:", err);  
+        return res.status(500).json(err);
+      }
+
+      res.json({ message: "User created successfully" });
     }
   );
 };
